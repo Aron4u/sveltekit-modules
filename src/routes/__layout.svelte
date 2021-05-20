@@ -1,13 +1,16 @@
 <script context="module">
-	import { get, readable } from 'svelte/store';
-	import { operationStore } from '@urql/svelte';
 	import { browser, dev } from '$app/env';
 	import { createClient } from '$lib/graphql/client';
+	import { operationStore, setClient } from '@urql/svelte';
+	import { get, readable } from 'svelte/store';
+	import { MenuMapping } from '../lib/helper/MenuMapping';
+	import Menu from '../lib/ui/Menu.svelte';
+	import PageTitle from '../lib/ui/PageTitle.svelte';
 
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
-	export async function load({ fetch, context }) {
+	export async function load({ page, fetch, context }) {
 		const client = await createClient({
 			url: 'http://localhost:3000/graphql',
 			// Pass in the fetch from sveltekit to have access to serialized requests during hydration
@@ -55,28 +58,30 @@
 					return store;
 				}
 			},
-			props: { client }
+			props: { client, pageTitle: MenuMapping[page.path] }
 		};
 	}
 </script>
 
 <script>
-	import { setClient } from '@urql/svelte';
-
 	/**
 	 * @type {import('@urql/svelte').Client}
 	 */
 	export let client;
+	export let pageTitle;
+
 	setClient(client);
 </script>
 
-<h3>Menu</h3>
-<ul>
-	<li><a href="./graphql" target="_blank">GraphQL</a></li>
-	<li />
-	<li><a href="./user">User</a></li>
-	<li><a href="./channel">Channel</a></li>
-</ul>
+<Menu />
+<PageTitle {pageTitle} />
 
-<h3>Page</h3>
-<slot />
+<main class="p">
+	<slot />
+</main>
+
+<style>
+	.p {
+		padding: 1rem;
+	}
+</style>

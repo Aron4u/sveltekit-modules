@@ -1,3 +1,0 @@
-extend type Mutation {
-	create[FTName|pascalcase](name: String!): [FTName|pascalcase]
-}

@@ -1,12 +1,19 @@
 <script lang="ts">
-	import type { User } from '../../../graphql/_gen/graphqlClient';
+	import type { UserFragment } from '$lib/graphql/_gen/graphqlClient';
+	import CardList from '$lib/ui/CardList.svelte';
 	import UserCard from './UserCard.svelte';
 
-	export let users: Array<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>;
+	export let users: UserFragment[];
 </script>
 
-<ul>
+<CardList
+	list={users.map((c) => {
+		return { name: c.name };
+	})}
+/>
+
+<!-- <ul>
 	{#each users as user}
 		<UserCard {user} />
 	{/each}
-</ul>
+</ul> -->

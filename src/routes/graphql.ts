@@ -12,6 +12,18 @@ query GetUsers{
 		name
 	}
 }
+
+mutation AddUserInChannel($idUser: String!, $idChannel: String!) {
+  addUserInChannel(idUser: $idUser, idChannel: $idChannel){
+    id
+    name
+    users{
+      id
+      name
+    }
+  }
+}
+
 `;
 
 const respond = async (request): Promise<Response> => {
